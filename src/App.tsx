@@ -1,5 +1,5 @@
 import React from 'react';
-import { HashRouter as Router, Route, Routes } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import LandingPage from './LandingPage/LandingPage';
 import Qwixx from './Qwixx/Qwixx';
 import Navbar from './Navbar';
@@ -8,7 +8,7 @@ import './App.scss';
 function App() {
   return (
   <div>
-    <Router basename={process.env.PUBLIC_URL}>
+    <Router basename="/SimpleGames">
       <Navbar/>
       <div className="App">
         <Routes>
