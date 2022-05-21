@@ -8,7 +8,7 @@ import './App.scss';
 function App() {
   return (
   <div>
-    <Router>
+    <Router basename={process.env.PUBLIC_URL}>
       <Navbar/>
       <div className="App">
         <Routes>
