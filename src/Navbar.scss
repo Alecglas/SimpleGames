@@ -1,0 +1,26 @@
+.navbar {
+    height: 80px;
+    background-color: lightgray;
+    display: flex;
+    align-items: center;
+}
+
+.navbarLink {
+    text-align: center;
+    text-decoration: none;
+    color: black;
+    font-weight: bold;
+    margin: 10px;
+    padding: 10px 20px;
+    background-color: white;
+    border: 2px solid black;
+}
+
+.navbarLink:hover {
+    background-color: lightgray;
+}
+
+.active {
+    color: white;
+    background-color: darkgray;
+}
