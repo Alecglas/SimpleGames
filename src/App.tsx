@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { HashRouter as Router, Route, Routes } from 'react-router-dom';
 import LandingPage from './LandingPage/LandingPage';
 import Qwixx from './Qwixx/Qwixx';
 import Navbar from './Navbar';
@@ -8,7 +8,7 @@ import './App.scss';
 function App() {
   return (
   <div>
-    <Router basename="/SimpleGames">
+    <Router basename="/">
       <Navbar/>
       <div className="App">
         <Routes>
