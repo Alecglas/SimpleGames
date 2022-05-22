@@ -1,0 +1,18 @@
+.cell {
+    width: 70px;
+    height: 70px;
+    font-size: 30px;
+    font-weight: bold;
+}
+
+.cell:not(.X, .O):hover {
+    filter: brightness(75%);
+}
+
+.X {
+    background-color: gray !important;
+}
+
+.O {
+    filter: brightness(60%);
+}

@@ -1,13 +1,39 @@
 import React from 'react';
-import { scryRenderedComponentsWithType } from 'react-dom/test-utils';
 import './Row.scss';
+import Square from '../Square/Square';
 
-export default function Row() {
-    let squares = []
-    for (let i = 0; i < 12; i++){
-        squares.push()
+export default function Row(props) {
+    const frame = props.row.frame;
+    const current = props.row.row;
+
+    let squares = [];
+    let pts = 0;
+
+    for (let [i, value] of current.entries()) {
+        squares.push(<Square
+            key={i}
+            value={frame[i]}
+            current={value}
+            onClick={(e) => {
+                props.onClick(frame[i])
+            }}
+        />)
     }
+
+    let bonus = 1;
+    current.forEach((cell) => {
+        if(cell === "O") {
+            pts += bonus;
+            bonus += 1;
+        }
+    });
+
     return(
-        <div>{squares}</div>
+        <div className={`rowContainer ${props.value}`}>
+            {squares}
+            <div className="rowPoints">
+                {pts}
+            </div>
+        </div>
     )
 }

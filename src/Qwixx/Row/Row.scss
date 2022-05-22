@@ -1,0 +1,29 @@
+.rowContainer{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+}
+
+.rowPoints {
+    margin-left: 30px;
+    width: 5%;
+    font-weight: bold;
+    font-size: 30px;
+}
+
+.red > div > button {
+    background-color: red;
+}
+
+.yellow > div > button {
+    background-color: yellow;
+}
+
+.green > div > button {
+    background-color: lime;
+}
+
+.blue > div > button {
+    background-color:aqua;
+}
