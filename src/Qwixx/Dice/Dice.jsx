@@ -3,7 +3,7 @@ import './Dice.scss';
 
 export default function Dice(props) {
     return(
-        <div className="dice">
+        <div className={`${props.color} dice`}>
             {props.value}
         </div>
     )

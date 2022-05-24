@@ -5,34 +5,30 @@ import Square from '../Square/Square';
 export default function Row(props) {
     const frame = props.row.frame;
     const current = props.row.row;
+    const score = props.row.score;
+    const available = props.available;
+    const color = props.color;
 
     let squares = [];
-    let pts = 0;
 
     for (let [i, value] of current.entries()) {
         squares.push(<Square
             key={i}
             value={frame[i]}
+            color={color}
             current={value}
+            disabled={!available.includes(value)}
             onClick={(e) => {
                 props.onClick(frame[i])
             }}
         />)
     }
 
-    let bonus = 1;
-    current.forEach((cell) => {
-        if(cell === "O") {
-            pts += bonus;
-            bonus += 1;
-        }
-    });
-
     return(
-        <div className={`rowContainer ${props.value}`}>
+        <div className="rowContainer">
             {squares}
             <div className="rowPoints">
-                {pts}
+            {score}
             </div>
         </div>
     )
