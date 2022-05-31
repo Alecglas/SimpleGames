@@ -10,14 +10,15 @@ export default function Row(props) {
     const color = props.color;
 
     let squares = [];
+    console.log(available);
 
     for (let [i, value] of current.entries()) {
         squares.push(<Square
             key={i}
             value={frame[i]}
-            color={color}
+            color={available.neutral === value ? "white" : color}
             current={value}
-            disabled={!available.includes(value)}
+            disabled={!(available.colored.includes(value) || available.neutral === value)}
             onClick={(e) => {
                 props.onClick(frame[i])
             }}

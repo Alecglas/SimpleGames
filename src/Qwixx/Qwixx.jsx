@@ -6,7 +6,8 @@ import Dice from './Dice/Dice';
 class Die {
     constructor(label) {
         this.label = label;
-        this.value = Math.floor(Math.random()*6)+1;
+        //this.value = Math.floor(Math.random()*6)+1;
+        this.value = 0;
     }
 
     roll() {
@@ -31,10 +32,10 @@ class QRow {
             }
         }
         this.row[index] = 'O';
-        this.getScore();
+        this.setScore();
     }
 
-    getScore = () => {
+    setScore = () => {
         this.score = 0;
         let counter = 1;
         this.row.forEach(cell => {
@@ -47,59 +48,116 @@ class QRow {
     }
 }
 
+class QPlayer {
+
+    constructor(config) {
+        this.scoreCard = {};
+        config.labels.forEach((label, i) => {
+            const framing = (i < 2) ? 1 : -1;
+            this.scoreCard[label] = new QRow(framing);
+        });
+    }
+
+    mark = (row, num) => {
+        const diceSums = this.diceSums;
+        this.scoreCard[row].mark(num);
+
+        if (num != diceSums.n) {
+            this.canMark = false;
+        } else {
+            this.diceSums.n = 0;
+        }
+        this.canRoll = true;
+    }
+}
+
 class QGame {
 
     constructor() {
         this.config = {
+            players: 2,
             rows: 4,
             labels: ["red", "yellow", "green", "blue"]
         }
 
-        this.board = {}
+        this.players = {}
         this.dice = {}
+        this.diceSums = {}
+        this.canMark = false;
+        this.canRoll = true;
+
+        for(let i = 0; i < this.config.players; i++){
+            this.players[i] = new QPlayer(this.config);
+        }
 
         this.config.labels.forEach((label, i) => {
-            const framing = (i < 2) ? 1 : -1;
-            this.board[label] = new QRow(framing);
             this.dice[label] = new Die(label);
         });
-
         this.dice["n1"] = new Die("n1");
         this.dice["n2"] = new Die("n2");
     }
 
 
-    mark = (row, num) => {
-        console.log([row,num]);
-        this.board[row].mark(num);
-        this.rollDice();
-    }
+
 
     rollDice = () => {
         console.log("rolling");
         for (let key in this.dice) {
             this.dice[key].roll();
         }
+        this.getDiceSums();
+        this.canMark = true;
+        this.canRoll = false;
     }
 
-    diceSums = () => {
+    getDiceSums = () => {
         let sums = {}
         let n1 = this.dice["n1"].value;
         let n2 = this.dice["n2"].value;
+        sums.n = n1+n2;
         this.config.labels.forEach(key => {
             let die = this.dice[key].value;
-            sums[key] = [n1+n2, die+n1, die+n2]
+            sums[key] = [die+n1, die+n2];
         });
 
-        return sums;
+        this.diceSums = sums;
     }
 
-    available = () => {
-        const sums = this.diceSums();
-        for(let key in sums){
-            //console.log(sums[key])
+    mark = (player, row, num) => {
+        const diceSums = this.diceSums;
+        this.players[player].scoreCard[row].mark(num);
+
+        if (num != diceSums.n) {
+            this.canMark = false;
+        } else {
+            this.diceSums.n = 0;
         }
-        //console.log(sums)
+        this.canRoll = true;
+    }
+
+    available = (player, label) => {
+        let diceSums = this.diceSums;
+
+        let sums = {
+            neutral: 0,
+            colored: []
+        }
+
+        if (!this.canMark) return sums;
+        
+        const row = this.players[player].scoreCard[label];
+
+        sums.neutral = diceSums.n;
+        sums.colored = diceSums[label]
+
+        if(row.score < 15){
+            const finisher = row.frame[row.frame.length-1];
+            sums.neutral = sums.neutral === finisher ? 0 : sums.neutral;
+            sums.colored = sums.colored.filter(num => num !== finisher);
+        }
+
+        
+        console.log(sums)
         return sums;
     }
 }
@@ -110,7 +168,7 @@ export default function Qwixx() {
 
 
     const handleClick = (row, num) => {
-        Game.mark(row, num);
+        Game.mark(0, row, num);
         forceUpdate();
     }
 
@@ -133,8 +191,8 @@ export default function Qwixx() {
         <Row
             key={`${label}-row`}
             color={label}
-            row={Game.board[label]}
-            available={Game.available()[label]}
+            row={Game.players[0].scoreCard[label]}
+            available={Game.available(0, label)}
             onClick={(n) => {
                 handleClick(label, n);
             }}
@@ -161,7 +219,7 @@ export default function Qwixx() {
             </div>
             {rows}
         </div>
-        <button onClick={handleRoll}>Roll Dice</button>
+        <button disabled={!Game.canRoll} onClick={handleRoll}>Roll Dice</button>
         <h1>Game Message</h1>
     </div>)
 }
