@@ -1,7 +1,6 @@
 import React from 'react';
 import Square from '../Square/Square';
 import styles from './Board.module.scss';
-import { Grid } from '@mui/material';
 
 export default function Board(props) {
 
@@ -25,10 +24,10 @@ export default function Board(props) {
     }
 
     return(
-        <Grid container columns={8} className={styles.board}>
+        <div className={styles.board}>
             {board.map(row => (
-                <Grid>{row}</Grid>
+                <div>{row}</div>
             ))}
-        </Grid>
+        </div>
     )
 }
