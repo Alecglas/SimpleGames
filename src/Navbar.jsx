@@ -7,6 +7,7 @@ export default function Navbar() {
     <div className="navbar">
         <NavLink className="navbarLink" to="/" end>Home</NavLink>
         <NavLink className="navbarLink" to="/qwixx">Qwixx</NavLink>
+        <NavLink className="navbarLink" to="/chess">Chess</NavLink>
     </div>
   );
 }

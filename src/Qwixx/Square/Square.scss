@@ -1,0 +1,37 @@
+.cell {
+    width: 70px;
+    height: 70px;
+    font-size: 30px;
+}
+
+.cell:not(:disabled) {
+    font-weight: bold;
+}
+
+.cell:not(:disabled):hover {
+    filter: brightness(75%);
+}
+
+.X {
+    background-color: gray !important;
+}
+
+.O {
+    filter: brightness(60%);
+}
+
+.red {
+    background-color: red;
+}
+
+.blue {
+    background-color: aqua;
+}
+
+.yellow {
+    background-color: gold;
+}
+
+.green {
+    background-color: lawngreen
+}
